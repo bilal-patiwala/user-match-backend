@@ -80,13 +80,47 @@ public class AccessController {
             responseBody.put("user_id", response.getBody().get("user_id").toString());
             responseBody.put("token_type", longLiveTokenResponse.getBody().get("token_type").toString());
             responseBody.put("expires_in", longLiveTokenResponse.getBody().get("expires_in").toString());
-
-
             return ResponseEntity.status(response.getStatusCode()).body(responseBody);
         }
         catch (Exception e){
             System.out.println(e);
             return ResponseEntity.status(400).body(null);
         }
+    }
+
+    @PostMapping("refresh_token")
+    @ResponseBody
+    @CrossOrigin(origins = "https://127.0.0.1:5173/")
+    public ResponseEntity<Map<String, String>> getrefreshToken(@RequestBody Map<String, String> request){
+        try{
+            String url = "https://graph.instagram.com/refresh_access_token";
+            String access_token = request.get("access_token");
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("grant_type", "ig_refresh_token").queryParam("access_token", access_token);
+
+            HttpHeaders headers1 = new HttpHeaders();
+            headers1.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<?> RequestEntity = new HttpEntity<>(headers1);
+
+            RestTemplate template = new RestTemplate();
+            ResponseEntity<Map> response = template.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                RequestEntity,
+                Map.class
+            );
+
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("access_token", response.getBody().get("access_token").toString());
+            responseBody.put("token_type", response.getBody().get("token_type").toString());
+            responseBody.put("expires_in", response.getBody().get("expires_in").toString());
+            return ResponseEntity.status(response.getStatusCode()).body(responseBody);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(400).body(null);
+        }
+        
+
     }
 }
