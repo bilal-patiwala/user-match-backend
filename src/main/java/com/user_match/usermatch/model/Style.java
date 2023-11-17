@@ -21,9 +21,8 @@ public class Style {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private String body_type;
-    private String cloths_prefrence;
-    private String clothing_style;
-    private String winter_wear_type;
+    private String style_tag;
+    private String clothing_type;
+    private String size_info;
     private String outfit_swap_type;
 }

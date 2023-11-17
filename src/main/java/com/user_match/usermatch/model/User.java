@@ -44,7 +44,20 @@ public class User {
     private String username;
     private String email;
     private String location;
+    private String body_type;
 
+    public String getBody_type() {
+        return body_type;
+    }
+    public void setBody_type(String body_type) {
+        this.body_type = body_type;
+    }
+    public Set<Style> getStyle() {
+        return style;
+    }
+    public void setStyle(Set<Style> style) {
+        this.style = style;
+    }
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Style> style;
     
